@@ -13,7 +13,8 @@ void raiz() {
   "<a href='/giro'>Giro</a><br>"+
   "<a href='/tanque'>Tanque</a><br>"+
   "<a href='/peso'>Peso</a>"+
-  "<br><a href='/hora'>Hora</a>"
+  "<br><a href='/hora'>Hora</a>"+
+  "<br><a href='/horarios'>Horarios</a>"
   );
 }
 
@@ -24,7 +25,8 @@ void tanque() {
   "<a href='/giro'>Giro</a><br>"+
   "<a href='/tanque'>Tanque</a><br>"+
   "<a href='/peso'>Peso</a>"+
-  "<br><a href='/hora'>Hora</a>");
+  "<br><a href='/hora'>Hora</a>"+
+  "<br><a href='/horarios'>Horarios</a>");
 
 }
 
@@ -33,7 +35,8 @@ void peso() {
   "<a href='/giro'>Giro</a><br>"+
   "<a href='/tanque'>Tanque</a><br>"+
   "<a href='/peso'>Peso</a>"+
-  "<br><a href='/hora'>Hora</a>");
+  "<br><a href='/hora'>Hora</a>"+
+  "<br><a href='/horarios'>Horarios</a>");
 }
 
 void rotar(){
@@ -41,7 +44,8 @@ void rotar(){
   "<a href='/giro'>Giro</a><br>"+
   "<a href='/tanque'>Tanque</a><br>"+
   "<a href='/peso'>Peso</a>"+
-  "<br><a href='/hora'>Hora</a>");
+  "<br><a href='/hora'>Hora</a>"+
+  "<br><a href='/horarios'>Horarios</a>");
     motor.step(giro);
     motor.step(-24);
     digitalWrite(D3, LOW);
@@ -59,6 +63,13 @@ void rotar(){
     int minuto = millisPasados/1000/60;
     minuto += encendido;
     minuto %= 1440;
+
+    
+    Serial.println("Alimentar?");
+    Serial.println("Minuto actual: " + (String) obtenerMinuto());
+    Serial.println("Ultima: " + (String) ultimaAlimentacion);
+    Serial.println("Siguiente: " + (String) siguienteAlimentacion);
+    Serial.println();
     
     server.send(200, "text/html",
     "Millis ESP8266: " + (String)millis()
@@ -70,5 +81,6 @@ void rotar(){
     +"<br><a href='/giro'>Giro</a><br>"+
   "<a href='/tanque'>Tanque</a><br>"+
   "<a href='/peso'>Peso</a>"+
-  "<br><a href='/hora'>Hora</a>");
+  "<br><a href='/hora'>Hora</a>"+
+  "<br><a href='/horarios'>Horarios</a>");
     }

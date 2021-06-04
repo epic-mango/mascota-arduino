@@ -40,10 +40,17 @@ int millisEncendido = 0;
 WiFiUDP ntpUDP;
 
 NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
+int conteoHorarios =24;
+int horarios[24][2];
+
+int ultimaAlimentacion = 0;
+int siguienteAlimentacion = 1440;
+int gramosSiguientes = 10;
 
 //----------------------------------------------------Estados
 int estado = 1;
 const int ESTADO_SERVER = 1;
+const int ESTADO_ALIMENTAR = 2;
 
 void setup() {
   //----------------------------------------------------------------SETUP SERIAL
@@ -88,11 +95,6 @@ void setup() {
   Serial.println("Minutos:" + (String) encendido);
 }
 
-void loop() {
-  if(estado == ESTADO_SERVER){
-    server.handleClient();
-  }
-    }
 
 String buscarArgumento(String busqueda, String cadena){
     int inicio = cadena.indexOf("\""+busqueda+"\":\"");    
@@ -112,4 +114,39 @@ String buscarArgumento(String busqueda, String cadena){
     int fin = cadena.indexOf("]", inicio);
 
     return cadena.substring(inicio+1, fin);
+    }
+
+    
+void loop() {
+  if(estado == ESTADO_SERVER){
+    if(alimentar()){
+
+      Serial.println("Minuto actual: " + (String) obtenerMinuto());
+      Serial.println("Ultima: " + (String) ultimaAlimentacion);
+      Serial.println("Siguiente: " + (String) siguienteAlimentacion);
+      
+      estado=ESTADO_ALIMENTAR;
+      
+      }
+      else{
+    server.handleClient();
+    }
+  } else if (estado == ESTADO_ALIMENTAR){
+      if(gramosSiguientes > 0){
+        Serial.println("Alimentando: " + (String) gramosSiguientes);
+        motor.step(giro);
+        motor.step(-24);
+
+        gramosSiguientes--;
+
+        delay(500);
+
+        
+        } else {
+          repararHorarios();
+          registrarNivel();
+          estado = ESTADO_SERVER;
+          Serial.println("Actuando como server");
+          }
+    }
     }
