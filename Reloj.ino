@@ -22,3 +22,27 @@ int obtenerMinuto(){
     minuto += encendido;
     minuto %= 1440;
   }
+
+  void llenarHorarios(){
+    
+  WiFiClient cliente;
+  HTTPClient http;
+
+  if (http.begin(cliente, "http://" + (String) backend + "/mascotarest/horarios.php?mac=" + (String)WiFi.macAddress())) {
+    http.addHeader("Authorization", token);
+    http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+    
+    int httpCode = http.GET();
+
+      if (httpCode == HTTP_CODE_OK || httpCode == HTTP_CODE_MOVED_PERMANENTLY) {
+        String payload = http.getString();
+
+          Serial.println("Correcto: " + buscarArray("datos",payload));
+        
+      
+    }  else {
+      Serial.printf("[HTTP] GET... failed, error: %s\n", http.errorToString(httpCode).c_str());
+    }
+  
+  }
+  }

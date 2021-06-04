@@ -8,6 +8,8 @@ const char* ssid = "INFINITUM1515_2.4";
 const char* wpa2 = "aS5zeNLknC";
 
 ESP8266WebServer server(80);
+
+const int intentosConexion=1000;
 //-------------------------------------------------------Nivel del tanque
 #define nivel_lleno D1
 #define nivel_medio D2
@@ -40,6 +42,7 @@ WiFiUDP ntpUDP;
 NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
 
 //----------------------------------------------------Estados
+int estado = 1;
 const int ESTADO_SERVER = 1;
 
 void setup() {
@@ -48,7 +51,9 @@ void setup() {
   //-----------------------------------------------------------------SETUP SERVER REST
   WiFi.begin(ssid, wpa2);
   Serial.println("Conectando a " + (String)ssid);
-  while (WiFi.status() != WL_CONNECTED) {
+
+  int intentos = 0;
+  while (WiFi.status() != WL_CONNECTED && intentos++ < intentosConexion) {
     delay(1000);
     Serial.print(".");
   }
@@ -79,20 +84,32 @@ void setup() {
   registrarNivel();
   inicializarReloj();
   sincronizar();
+  llenarHorarios();
   Serial.println("Minutos:" + (String) encendido);
 }
 
 void loop() {
+  if(estado == ESTADO_SERVER){
     server.handleClient();
+  }
     }
 
 String buscarArgumento(String busqueda, String cadena){
-    int inicio = cadena.indexOf("\""+busqueda+"\":\"");
+    int inicio = cadena.indexOf("\""+busqueda+"\":\"");    
     int fin = cadena.indexOf("\"", inicio+busqueda.length()+2);
-
-    inicio = fin;
+    inicio = fin;    
     fin = cadena.indexOf("\"", inicio+1);
+    
     String resultado = cadena.substring(inicio+1,fin);
 
     return resultado;
   }
+
+  String buscarArray(String busqueda, String cadena){
+    int inicio = cadena.indexOf("\""+busqueda+"\":[");
+    inicio+= busqueda.length()+3;    
+
+    int fin = cadena.indexOf("]", inicio);
+
+    return cadena.substring(inicio+1, fin);
+    }
