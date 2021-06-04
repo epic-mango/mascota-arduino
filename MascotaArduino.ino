@@ -28,6 +28,20 @@ Stepper motor (giro, D3, D4, D5,D6 );
 #define backend "192.168.7.70"
 #define pass "123"
 String token ="";
+
+//--------------------------------------------------Reloj
+#include <NTPClient.h>
+const long utcOffsetInSeconds = -18000;
+
+int encendido= 0;
+int millisEncendido = 0;
+WiFiUDP ntpUDP;
+
+NTPClient timeClient(ntpUDP, "pool.ntp.org", utcOffsetInSeconds);
+
+//----------------------------------------------------Estados
+const int ESTADO_SERVER = 1;
+
 void setup() {
   //----------------------------------------------------------------SETUP SERIAL
   Serial.begin(115200);
@@ -63,11 +77,14 @@ void setup() {
   //-----------------------------------------------------SETUP CLIENTE WEB
   loginDispositivo();
   registrarNivel();
+  inicializarReloj();
+  sincronizar();
+  Serial.println("Minutos:" + (String) encendido);
 }
 
 void loop() {
     server.handleClient();
-}
+    }
 
 String buscarArgumento(String busqueda, String cadena){
     int inicio = cadena.indexOf("\""+busqueda+"\":\"");
