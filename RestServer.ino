@@ -13,7 +13,7 @@ void raiz() {
   "<a href='/giro'>Giro</a><br>"+
   "<a href='/tanque'>Tanque</a><br>"+
   "<a href='/peso'>Peso</a>"+
-  "<a href'/hora'>Hora</a>"
+  "<a href='/hora'>Hora</a>"
   );
 }
 
@@ -24,7 +24,7 @@ void tanque() {
   "<a href='/giro'>Giro</a><br>"+
   "<a href='/tanque'>Tanque</a><br>"+
   "<a href='/peso'>Peso</a>"+
-  "<a href'/hora'>Hora</a>");
+  "<a href='/hora'>Hora</a>");
 
 }
 
@@ -33,7 +33,7 @@ void peso() {
   "<a href='/giro'>Giro</a><br>"+
   "<a href='/tanque'>Tanque</a><br>"+
   "<a href='/peso'>Peso</a>"+
-  "<a href'/hora'>Hora</a>");
+  "<a href='/hora'>Hora</a>");
 }
 
 void rotar(){
@@ -41,7 +41,7 @@ void rotar(){
   "<a href='/giro'>Giro</a><br>"+
   "<a href='/tanque'>Tanque</a><br>"+
   "<a href='/peso'>Peso</a>"+
-  "<a href'/hora'>Hora</a>");
+  "<a href='/hora'>Hora</a>");
     motor.step(giro);
     motor.step(-24);
     digitalWrite(D3, LOW);
@@ -70,5 +70,5 @@ void rotar(){
     +"<br><a href='/giro'>Giro</a><br>"+
   "<a href='/tanque'>Tanque</a><br>"+
   "<a href='/peso'>Peso</a>"+
-  "<a href'/hora'>Hora</a>");
+  "<a href='/hora'>Hora</a>");
     }
