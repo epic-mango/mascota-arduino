@@ -4,6 +4,7 @@ void inicializarServer() {
   server.on("/peso", peso);
   server.on("/giro", rotar);
   server.on("/hora", hora);
+  server.on("/horarios", llenarHorarios);
   server.begin();  
   Serial.println("Servidor REST iniciado");
 }
@@ -78,6 +79,8 @@ void rotar(){
     +"<br>Millis pasados:" + (String) millisPasados
     +"<br>Hora calculada: "+ (String) hora
     +"<br>Minuto calculado: " + (String) minuto
+    +"<br>Siguiente: "+ (String) siguienteAlimentacion +" " +(String) gramosSiguientes + " gramos"+
+    "<br>Ultima: "+ (String) ultimaAlimentacion
     +"<br><a href='/giro'>Giro</a><br>"+
   "<a href='/tanque'>Tanque</a><br>"+
   "<a href='/peso'>Peso</a>"+

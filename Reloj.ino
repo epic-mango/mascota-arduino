@@ -30,7 +30,7 @@ int obtenerMinuto(){
   WiFiClient cliente;
   HTTPClient http;
 
-  if (http.begin(cliente, "http://" + (String) backend + "/mascotarest/horarios.php?mac=" + (String)WiFi.macAddress())) {
+  if (http.begin(cliente, "http://" + (String) backend + "/horarios.php?mac=" + (String)WiFi.macAddress())) {
     http.addHeader("Authorization", token);
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
     
@@ -81,41 +81,37 @@ int obtenerMinuto(){
 
     delay(500);
     
-    if(obtenerMinuto() > ultimaAlimentacion && obtenerMinuto() > siguienteAlimentacion)
+    if(obtenerMinuto() > ultimaAlimentacion && obtenerMinuto() > siguienteAlimentacion){
+      ultimaAlimentacion= obtenerMinuto();
       return true;
-    else if(obtenerMinuto ()> siguienteAlimentacion &&obtenerMinuto ()< ultimaAlimentacion)
-      return true;
+    } else if(ultimaAlimentacion > obtenerMinuto()){
+      ultimaAlimentacion= obtenerMinuto();
+      }
+   
     else
       return false;
     }
 
     void repararHorarios(){
 
-      Serial.println("Reparando horarios");
-
       ultimaAlimentacion = obtenerMinuto();
-    Serial.println("Reparando horarios B");
-      siguienteAlimentacion = 1440;
 
-      Serial.println("Reparando horarios C");
+      Serial.println("Reparando horarios");
+      siguienteAlimentacion = 1440;
       for(int i = 0; i < conteoHorarios; i++){
 
         Serial.println("Reparando horarios D" + (String) i);
-        if(siguienteAlimentacion > horarios[i][0] && horarios[i][0] > ultimaAlimentacion)
+        if(siguienteAlimentacion > horarios[i][0] && horarios[i][0] > ultimaAlimentacion){
         siguienteAlimentacion = horarios[i][0];
         gramosSiguientes = horarios[i][1];
         }
+        }
 
         if(siguienteAlimentacion==1440)
-          {
-          
-            for(int i = 0 ; i < conteoHorarios; i++){
-              Serial.println("Reparando horarios E" + (String) i);
-              if(siguienteAlimentacion > horarios[i][0])
-              siguienteAlimentacion = horarios[i][0];
-              gramosSiguientes = horarios[i][1];
-              }
-          }
+          {siguienteAlimentacion = 0;
+              gramosSiguientes = 0;}
 
       Serial.println("Siguiente: "+ (String) siguienteAlimentacion +" " +(String) gramosSiguientes + " gramos");
+
+      
       }

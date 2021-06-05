@@ -2,7 +2,7 @@ void loginDispositivo() {
   WiFiClient cliente;
   HTTPClient http;
 
-  if (http.begin(cliente, "http://" + (String) backend + "/mascotarest/dispositivos.php?mac=" + (String)WiFi.macAddress() + "&pass=" + (String)pass)) {
+  if (http.begin(cliente, "http://" + (String) backend + "/dispositivos.php?mac=" + (String)WiFi.macAddress() + "&pass=" + (String)pass)) {
 
     int httpCode = http.GET();
 
@@ -29,7 +29,7 @@ void registrarNivel() {
   WiFiClient cliente;
   HTTPClient http;
 
-  if (http.begin(cliente, "http://" + (String) backend + "/mascotarest/sensores.php")) {
+  if (http.begin(cliente, "http://" + (String) backend + "/sensores.php")) {
     http.addHeader("Authorization", token);
     http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
